@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+
+{% block contenido %}
+{% if user.username %}
+
+ <div id="saludo">
+    <h1>Hola, {{request.user.username}},Bienvenid@! </h1>
+</div> 
+
+<div id="img-home" class="img-home">
+    <img src="{% static 'img/doc_laptop.jpg' %}" alt="">
+</div>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+#saludo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    padding: 35px 15px;
+}
+
+.img-home img{
+    display: block;
+    margin: auto;
+    padding: 15px;
+}

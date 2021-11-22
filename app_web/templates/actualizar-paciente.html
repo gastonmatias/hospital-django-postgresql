@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}<!--Se indica que se heredará la plantilla html layout.html-->
+{% load static %}<!--Se indica que se usará (cargará) la carpeta static en este html-->
+
+{% block css %}
+    
+{% endblock %}
+
+<!--se carga crispy forms (necesario para usar los forms de bootstrap con python)-->
+{% load crispy_forms_tags %} 
+
+{% block contenido %}
+
+<!-- <script src="{% static 'js/confirm_edit.js' %}"></script> -->
+
+<div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+
+        <div class="card">
+            <div class="card-body">
+                <br><!--salto de linea-->
+                <h2>Editar Paciente</h2>
+                <hr><!--linea divisoria-->
+
+                <form action="" method="post" enctype="multipart/form-data" novalidate>
+
+                    {% csrf_token %}<!--se carga token necesario x seguridad-->
+                    {{form_actualizar | crispy }}<!--se carga el form creado x python y bootstrap-->
+
+                    <div class="d-flex justify-content-center">
+                        
+                        <a type="reset" href="{% url 'app_web:listarPacientes' %}" class="btn btn-secondary">Cancelar</a>
+                        &nbsp;<!--un espacio entre los botones-->
+                        
+                        <!--AQUI HAY CODIGO COMBINADO DE HTML, JS Y DJANGO, MAGIA NEGRA (VS LO DETECTA COMO "ERROR")-->
+                        <!-- <a href="#" onclick="actualizarPaciente()" type="submit" class="btn btn-primary">Actualizar</a> -->
+                        <input id="actualizar-paciente" type="submit"  Value="Actualizar" class="btn btn-primary">
+
+                    </div>
+                </form>
+                {{mensaje}}<!--mensaje "registro exitoso", referencia en views.py-->
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}<!--Fin de contenido de pagina registro-cliente.html-->
+

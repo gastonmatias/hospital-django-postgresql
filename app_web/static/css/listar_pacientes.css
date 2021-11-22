@@ -1,0 +1,17 @@
+
+
+#agregar-paciente{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    text-decoration: none;
+    align-items: center;
+    color: green;
+    
+}
+
+#logo-agregar{
+    width: 5%;
+    margin: 10px 5px;
+}
+

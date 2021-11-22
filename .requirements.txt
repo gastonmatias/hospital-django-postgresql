@@ -1,0 +1,11 @@
+django
+django-shortcuts
+pillow
+django-crispy-forms
+pytest
+psycopg2 ## para enlazar con postgresql!
+
+## ejecutar por consola:
+## $ pip install -r .requirements.txt 
+## et voilá
+## no olvidar el "."

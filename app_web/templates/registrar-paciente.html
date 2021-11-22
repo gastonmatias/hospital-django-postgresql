@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}<!--Se indica que se heredará la plantilla html layout.html-->
+{% load static %}<!--Se indica que se usará (cargará) la carpeta static en este html-->
+
+{% block css %}<!--Css exclusivo de html hijo registro-paciente.html-->
+    
+{% endblock %}
+
+<!--se carga crispy forms (necesario para usar los forms de bootstrap con python)-->
+{% load crispy_forms_tags %} 
+
+{% block contenido %}<!--Inicio de contenido de pagina registro-paciente.html-->
+
+<!--Aqui codificar todo el contenido de registro-paciente-->
+
+<div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+
+        <div class="card">
+            <div class="card-body">
+                <br><!--salto de linea-->
+                <h2>Registro Paciente</h2>
+                <hr><!--linea divisoria-->
+
+                <form name="registro-paciente" action="" method="post" enctype="multipart/form-data" novalidate ><!--"noValidate" omite msje alerta de validation de html5, para usar las de django-->
+
+                    {% csrf_token %}<!--se carga token necesario x seguridad-->
+                    {{form_paciente | crispy }}<!--se carga el form creado x python y bootstrap-->
+
+                    <div class="d-flex justify-content-center">
+                        
+                        <a href="{% url 'app_web:listarPacientes' %}">volver</a>
+                        &nbsp;<!--un espacio entre los botones-->
+                        &nbsp;<!--un espacio entre los botones-->
+                        <input  type="reset" value="Limpiar" class="btn btn-secondary">
+                        
+                        &nbsp;<!--un espacio entre los botones-->
+                        <input name="guardar" type="submit" value="Guardar" class="btn btn-primary">
+
+                    </div>
+                </form>
+                {{mensaje}}<!--mensaje "registro exitoso", referencia en views.py-->
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}<!--Fin de contenido de pagina registro-cliente.html-->

@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/listar_pacientes.css' %}">
+{% endblock %}
+
+{% block contenido %}
+{% load humanize %}
+
+<script src="{% static 'js/confirm_delete.js' %}" ></script>
+<div class="card">
+    <div class="card-body">
+        <div class="titulo-lista">
+            <h2>Administración Pacientes</h2>
+        </div>
+        <hr>
+
+        <a id="agregar-paciente" href="{% url 'app_web:registrarPaciente' %}">
+            <img id="logo-agregar" src="{% static 'img/agregar_usuario.png' %}" alt=""> 
+            Agregar Paciente
+        </a>
+
+       
+        <table class="table table-striped table-hover table-responsive-sm" width="200">
+            <tr>
+                <th>Foto</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Rut</th>
+                <th>Nacionalidad</th>
+                <th>Email</th>
+                <th>Nickname</th>
+                <th></th>
+            </tr>
+         
+            {% for p in pacientes %}
+            <tr>
+                <!-- {% if p.foto.url is none %}
+                    <td ><img src="" width="100" height="100" alt="Sin Foto"></td>
+                {% else %}
+                    <td ><img src="{{ p.foto.url }}" width="100" height="100" alt="Sin Foto"></td>
+                {% endif %} -->
+                <td ><img src="{{ p.foto.url }}" width="100" height="100" alt="Sin Foto"></td>
+                <td >{{p.nombre | title }}</td>
+                <td >{{p.apellido | title }}</td>
+                <td >{{p.rut}}</td>
+                <td >{{p.nacionalidad }}</td>
+                <td >{{p.email }}</td>
+                <td >{{p.nickname }}</td>
+                
+                <td>
+                    <!--ACTUALIZAR PACIENTE-->
+                    <a id="modificar-paciente" href="{% url 'app_web:actualizarPaciente' p.id_paciente %}" class="btn btn-outline-info btn-sm" >Modificar</a>
+                    
+                     <!--AQUI HAY CODIGO COMBINADO DE HTML, JS Y DJANGO, MAGIA NEGRA (VS LO DETECTA COMO "ERROR")-->
+                    <!--ELIMINAR PACIENTE-->
+                     <a id="eliminar-paciente" href="#" onclick="eliminarPaciente({{p.id_paciente}})" class="btn btn-outline-danger btn-sm">Eliminar</a>
+                </td>
+                
+            </tr>
+            {% endfor %}
+        
+            
+        
+        
+        
+        </table>
+        <hr>
+
+     
+
+
+
+    </div>
+</div>
+
+{% endblock %}
