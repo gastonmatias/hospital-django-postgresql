@@ -3,6 +3,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from app_web.forms import PacienteForm
 from app_web.models import Paciente
 from django.contrib import messages
+from django.core.paginator import Paginator #paginador de listado de pacientes
+from django.http import Http404 # por si el "try - except" del paginador falla
+
+from django.views.generic import ListView,View
 
 # Create your views here.
 def home(request):
@@ -34,14 +38,72 @@ def registrarPaciente(request):
     
     return render (request,'registrar-paciente.html',data)#'data' se pasa como 3ra parametro para qe se imprima el form en el html
 
-def listarPacientes(request):
-    pacientes = Paciente.objects.all()
-
+def listarPacientes2(request):
+    #pacientes_list = Paciente.objects.get_queryset().order_by('id_paciente')
+    pacientes_list = Paciente.objects.all()
+   
     data ={
-        'pacientes': pacientes
+        'pacientes': pacientes_list 
+        #se optó por poner de nombre "entity" (y no 'productos')para que hiciera match con las validaciones
+        #del archivo paginator.html
+        #'paginator': paginator #enviar instancia de paginator, esta integrado con bootstrap
     }
 
     return render(request,'listar-pacientes.html',data)
+
+def listarPacientes(request):
+    #pacientes2 = Paciente.objects.get_queryset().order_by('id_paciente')
+    pacientes2 = Paciente.objects.all().order_by('id_paciente')
+    #para paginacion
+    page = request.GET.get('page',1) #de la variable de la url, obtener la variable llamada page, 
+                                     #si no existiese, se usará "1" por defecto (osea ir a la primera pagina por default)
+
+    try: #try pq se puede caer si es que no existiese la pagina, por ejemplo
+        paginator = Paginator(pacientes2,4)# 2 parametros = datos a paginar, cantidad de instancias
+        pacientes2 = paginator.page(page)
+    except:
+        raise Http404 #si no existiese la pagina, se mostrará "not found"
+
+    data ={
+        'entity': pacientes2 
+        #se optó por poner de nombre "entity" (y no 'productos')para que hiciera match con las validaciones
+        #del archivo paginator.html
+        #'paginator': paginator #enviar instancia de paginator, esta integrado con bootstrap
+    }
+
+    return render(request,'listar-pacientes2.html',data)
+
+#############################################################################################
+class ListarPacientes3(ListView):
+    model = Paciente
+    paginate_by = 5
+    template_name = 'listar-pacientes3.html'
+    ordering = ['id_paciente']
+    #ordering_fields = ['nombre']
+
+    def get_queryset(self):
+        #pacientes_list = Paciente.objects.get_queryset().order_by('id_paciente')
+        #pacientes3 = Paciente.objects.all()
+        pacientes3 = Paciente.objects.get_queryset()
+        return pacientes3
+
+class ListarPacientes4(ListView):
+    model = Paciente
+    paginate_by = 5
+    template_name = 'listar-pacientes4.html'
+ 
+
+    def get_queryset(self):
+        #pacientes_list = Paciente.objects.get_queryset().order_by('id_paciente')
+        pacientes4 = Paciente.objects.all()
+        return pacientes4
+    
+    def get_ordering(self):
+        ordering = self.request.GET.get('ordering','telefono')
+        # validate ordering here
+        return ordering
+
+
 
 """ACTUALIZAR PACIENTE"""
 def actualizarPaciente(request, id):
